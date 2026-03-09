@@ -1,0 +1,17 @@
+# R
+.RData
+.Rhistory
+.Rapp.history
+*.RData
+
+# RStudio
+.Rproj.user/
+*.Rproj
+
+# Output temporanei
+results/figures/*.png
+results/figures/*.pdf
+
+# OS
+.DS_Store
+Thumbs.db
