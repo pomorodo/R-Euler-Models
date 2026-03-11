@@ -66,7 +66,7 @@ for (i in 1:K){
   ext_times<-extinctions[,i]
   ext_times<-ext_times[!is.na(ext_times)]
   if(length(ext_times)>0){
-    hist(ext_times, breaks = 40, col = i, border = "white",
+    hist(ext_times, breaks = 30, col = i, border = "white",
          main = paste("Variant #", i),
          xlab = "time of extinction", ylab = "frequence")
   }
@@ -87,17 +87,18 @@ barplot(n_estinzioni,
         border = "white")
 
 #Textual responses------------------------------------------------
-# Extinctions Ratio
+# Extinctions Ratios
 for (v in 1:K) {
   n_ext <- sum(!is.na(extinctions[, v]))         
   perc   <- round(100 * n_ext / NSIM, 1)           
-  cat(sprintf("Variant #%d: %d/%d simulazioni estinte (%.1f%%)\n",
+  cat(sprintf("Variant #%d: extinct in %d/%d simulations  (%.1f%%)\n",
               v, n_ext, NSIM, perc))
 }
 
-# Quante simulazioni hanno avuto ALMENO una estinzione
+# Amount of sim that had at least one extinction
 sim_con_ext <- sum(apply(extinctions, 1, function(riga) any(!is.na(riga))))
-cat(sprintf("\nSimulazioni con almeno un'estinzione: %d/%d (%.1f%%)\n",
+sim_con_ext <- sum(rowSums(!is.na(extinctions)) > 0)
+cat(sprintf("\n %d/%d (%.1f%%) simulations contain at least one extinction\n",
             sim_con_ext, NSIM, 100 * sim_con_ext / NSIM))
 
 
