@@ -52,12 +52,12 @@ estinzioni<-function(num_sim=1000, k, Ne, tempo_sim, deltat){
 set.seed(111)
 deltat <- 0.01
 K <- 4
-NE<-1000
-tsim<-100
-NSIM<-10000
+NE<-100
+TSIM<-1000
+NSIM<-100
 #evoluzione <- allele_freq(k=K, Ne=NE, tempo_sim=tsim, deltat=deltat)
 #colnames(evoluzione)<-paste("Variant #", 1:K)
-extinctions<-estinzioni(num_sim = NSIM,k=K, Ne=NE, tempo_sim=tsim, deltat=deltat)
+extinctions<-estinzioni(num_sim = NSIM,k=K, Ne=NE, tempo_sim=TSIM, deltat=deltat)
 
 #Plots---------------------------------------------------------
 par(mfrow=c(2,2))
@@ -95,8 +95,8 @@ for (v in 1:K) {
               v, n_ext, NSIM, perc))
 }
 
+
 # Amount of sim that had at least one extinction
-sim_con_ext <- sum(apply(extinctions, 1, function(riga) any(!is.na(riga))))
 sim_con_ext <- sum(rowSums(!is.na(extinctions)) > 0)
 cat(sprintf("\n %d/%d (%.1f%%) simulations contain at least one extinction\n",
             sim_con_ext, NSIM, 100 * sim_con_ext / NSIM))
