@@ -40,9 +40,7 @@ estinzioni<-function(num_sim=1000, k, Ne, tempo_sim, deltat){
     #Looking for the first times in which the variants touch zero (here: < 10^-9)
     for (v in 1:K) {
       x <- which(as.matrix(s_sim)[, v] < 1e-9)[1] #x = first index | variants under threshold
-      if (is.na(x)) {
-        ext_times[s, v] <- -1 # -1 = no extinction during the tempo_sim
-      } else {
+      if (!is.na(x)) {
         ext_times[s, v] <- x * deltat 
       }
     }
@@ -56,14 +54,18 @@ set.seed(111)
 deltat <- 0.01
 K <- 4
 NE<-10
-tsim<-100
-NSIM<-100
+tsim<-10
+NSIM<-10
 #evoluzione <- allele_freq(k=K, Ne=NE, tempo_sim=tsim, deltat=deltat)
 #colnames(evoluzione)<-paste("Variant #", 1:K)
 extinctions<-estinzioni(num_sim = NSIM,k=K, Ne=NE, tempo_sim=tsim, deltat=deltat)
 
 #Plot
-
+hist(extinctions,
+     breaks = 40, col = "firebrick",
+     main = "",
+     xlab = "time", ylab = "number of simulations")
+par(mfrow=c(2,2))
 
 
 
