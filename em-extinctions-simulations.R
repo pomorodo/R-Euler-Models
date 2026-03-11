@@ -31,7 +31,6 @@ allele_freq<-function(k, Ne, tempo_sim, deltat){
   
   return(ts(z, start = 0, deltat = deltat))
 }
-
 estinzioni<-function(num_sim=1000, k, Ne, tempo_sim, deltat){
   ext_times<-matrix(NA, nrow = num_sim, ncol = k) #Here we collect the extinction times
   
@@ -49,23 +48,76 @@ estinzioni<-function(num_sim=1000, k, Ne, tempo_sim, deltat){
   return(ext_times)
 }
 
-
+#-------------------Simulazione--------------------------------
 set.seed(111)
 deltat <- 0.01
 K <- 4
-NE<-10
-tsim<-10
-NSIM<-10
+NE<-1000
+tsim<-100
+NSIM<-10000
 #evoluzione <- allele_freq(k=K, Ne=NE, tempo_sim=tsim, deltat=deltat)
 #colnames(evoluzione)<-paste("Variant #", 1:K)
 extinctions<-estinzioni(num_sim = NSIM,k=K, Ne=NE, tempo_sim=tsim, deltat=deltat)
 
-#Plot
-hist(extinctions,
-     breaks = 40, col = "firebrick",
-     main = "",
-     xlab = "time", ylab = "number of simulations")
+#Plots---------------------------------------------------------
 par(mfrow=c(2,2))
+var_ext<-array(dim=(length(ext_times)))
+for (i in 1:K){
+  ext_times<-extinctions[,i]
+  ext_times<-ext_times[!is.na(ext_times)]
+  if(length(ext_times)>0){
+    hist(ext_times, breaks = 40, col = i, border = "white",
+         main = paste("Variant #", i),
+         xlab = "time of extinction", ylab = "frequence")
+  }
+  else{plot.new()
+       title(paste("No extinction of variant #",i))}
+  
+}
+par(mfrow=c(1,1))
+#Plot of extinctions per variant
+n_estinzioni <- colSums(!is.na(extinctions))
+barplot(n_estinzioni,
+        col    = 1:K,
+        width  = 0.8,          
+        space  = 0.3,
+        names.arg = paste("V#", 1:K),
+        main   = "Overall extinctions per variant",
+        xlab   = "Variant", ylab   = "Number of extinctions",
+        border = "white")
+
+#Textual responses------------------------------------------------
+# Extinctions Ratio
+for (v in 1:K) {
+  n_ext <- sum(!is.na(extinctions[, v]))         
+  perc   <- round(100 * n_ext / NSIM, 1)           
+  cat(sprintf("Variant #%d: %d/%d simulazioni estinte (%.1f%%)\n",
+              v, n_ext, NSIM, perc))
+}
+
+# Quante simulazioni hanno avuto ALMENO una estinzione
+sim_con_ext <- sum(apply(extinctions, 1, function(riga) any(!is.na(riga))))
+cat(sprintf("\nSimulazioni con almeno un'estinzione: %d/%d (%.1f%%)\n",
+            sim_con_ext, NSIM, 100 * sim_con_ext / NSIM))
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
