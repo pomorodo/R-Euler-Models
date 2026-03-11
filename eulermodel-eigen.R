@@ -22,11 +22,11 @@ allele_freq<-function(k, Ne, tempo_sim, deltat){
     
     dW <- rnorm(k - 1, mean = 0, sd = sqrt(deltat))
     ztilde[t+1, ] <- ztilde[t, ] + L %*% dW
-    if(sum(ztilde[t+1,])>1){ztilde[t+1,]<-ztilde[t+1,]/sum(ztilde[t+1,])}
+    if(sum(ztilde[t+1,])>1){break}
   }
   z[,1:(k-1)]<-ztilde
   for (h in 1:(N+1)) {
-    z[h,k]<-pmax(1-sum(ztilde[h,]), 1e-8)
+    z[h,k]<-1-sum(ztilde[h,])
   }
   
   return(ts(z, start = 0, deltat = deltat))
