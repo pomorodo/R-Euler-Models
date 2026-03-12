@@ -53,8 +53,8 @@ estinzioni<-function(num_sim=1000, k, Ne, tempo_sim, deltat){
 set.seed(111)
 deltat <- 0.01
 K <- 4
-NE<-10
-TSIM<-100
+NE<-100
+TSIM<-1000
 NSIM<-1000
 #evoluzione <- allele_freq(k=K, Ne=NE, tempo_sim=tsim, deltat=deltat)
 #colnames(evoluzione)<-paste("Variant #", 1:K)
