@@ -43,6 +43,7 @@ estinzioni<-function(num_sim=1000, k, Ne, tempo_sim, deltat){
         ext_times[s, v] <- x * deltat 
       }
     }
+    if (s %% 100 == 0) cat(sprintf("Simulazione %d / %d\n", s, num_sim))
   }
   colnames(ext_times) <- paste("Variant #", 1:k)
   return(ext_times)
@@ -52,9 +53,9 @@ estinzioni<-function(num_sim=1000, k, Ne, tempo_sim, deltat){
 set.seed(111)
 deltat <- 0.01
 K <- 4
-NE<-100
-TSIM<-1000
-NSIM<-100
+NE<-10
+TSIM<-100
+NSIM<-10000
 #evoluzione <- allele_freq(k=K, Ne=NE, tempo_sim=tsim, deltat=deltat)
 #colnames(evoluzione)<-paste("Variant #", 1:K)
 extinctions<-estinzioni(num_sim = NSIM,k=K, Ne=NE, tempo_sim=TSIM, deltat=deltat)
