@@ -55,14 +55,14 @@ deltat <- 0.01
 K <- 4
 NE<-10
 TSIM<-100
-NSIM<-10000
+NSIM<-1000
 #evoluzione <- allele_freq(k=K, Ne=NE, tempo_sim=tsim, deltat=deltat)
 #colnames(evoluzione)<-paste("Variant #", 1:K)
 extinctions<-estinzioni(num_sim = NSIM,k=K, Ne=NE, tempo_sim=TSIM, deltat=deltat)
 
 #Plots---------------------------------------------------------
 par(mfrow=c(2,2))
-var_ext<-array(dim=(length(ext_times)))
+
 for (i in 1:K){
   ext_times<-extinctions[,i]
   ext_times<-ext_times[!is.na(ext_times)]
