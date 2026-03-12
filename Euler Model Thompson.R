@@ -14,7 +14,11 @@ allele_freq<-function(k, Ne, tempo_sim, deltat){
           }
         }
         #Writing the Euler model of the sde
-        L  <- t(chol(Atilde[t, , ])) 
+        autov<-eigen(Atilde[t, , ], symmetric = TRUE)
+        V_sqrt<-sqrt(pmax(autov$values, 0))  #Decomposizione spettrale invece di cholesky
+        Q<-autov$vectors                     #ancora dubbi su valori negativi, come chol()
+        
+        L <- Q %*% diag(V_sqrt, nrow = k-1)
         dW <- rnorm(k - 1, mean = 0, sd = sqrt(deltat))
         ztilde[t+1, ] <- ztilde[t, ] + L %*% dW
         if(sum(ztilde[t+1,])>1){ztilde[t+1,]<-ztilde[t+1,]/sum(ztilde[t+1,])}
@@ -28,7 +32,7 @@ allele_freq<-function(k, Ne, tempo_sim, deltat){
 }
 set.seed(111)
 K<-4
-evoluzione<-allele_freq(k=K, Ne=1000, tempo_sim = 100, deltat = 0.01)
+evoluzione<-allele_freq(k=K, Ne=10, tempo_sim = 100, deltat = 0.01)
 colnames(evoluzione)<-paste("Variant #", 1:K)
 #Plot 1 (each variant progression)
 plot(evoluzione, col = 1:K, lwd=2,
